@@ -2331,8 +2331,12 @@ class MaskRCNN():
                                          augmentation=augmentation,
                                          batch_size=self.config.BATCH_SIZE,
                                          no_augmentation_sources=no_augmentation_sources)
-        val_generator = data_generator(val_dataset, self.config, shuffle=True,
+
+        if val_dataset != None and self.config.VALIDATION_STEPS > 0:
+            val_generator = data_generator(val_dataset, self.config, shuffle=True,
                                        batch_size=self.config.BATCH_SIZE)
+        else:
+            val_generator = None
 
         # Create log_dir if it does not exist
         if not os.path.exists(self.log_dir):
